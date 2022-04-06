@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2022/3/1 22:43
 # @Author  : Daryl
-# @FileName: test.py
+# @FileName: my_akshare.py
 # @Software: PyCharm
 
 import csv
@@ -24,6 +24,11 @@ def my_list():
     df = stock_list[['代码', '名称']]
     df.to_csv("stock_list.csv")
 
+    stock_list = ak.stock_zh_a_spot()
+    print(stock_list)
+    df = stock_list[['代码', '名称']]
+    df.to_csv("stock_list2.csv")
+
 
 # 获取股票历史行情数据
 def my_stock():
@@ -44,8 +49,8 @@ def my_stock():
                     market_date = dt.strptime(str(stock_individual_info_em_df.iloc[3, 1]), "%Y%m%d")
                     if market_date < date_end:
                         if stock_individual_info_em_df.iloc[0, 1] != '-':
-                            stock = ak.stock_zh_a_hist(symbol=row['代码'], period="daily", start_date="20170101", end_date='20211231',
-                                                       adjust="hfq")
+                            stock = ak.stock_zh_a_hist(symbol=row['代码'], period="daily", start_date="20000101",
+                                                       end_date='20211231', adjust="hfq")
                             stock.to_csv(f"stock/{row['代码']}.csv")
                             print(row['代码'], "store")
                         else:
@@ -89,8 +94,34 @@ def all_index():
     index_all_cni_df.to_csv("all_index.csv")
 
 
+# get China rate data
+def China_rate():
+    macro_bank_china_interest_rate_df = ak.macro_bank_china_interest_rate()
+    print(macro_bank_china_interest_rate_df)
+    macro_bank_china_interest_rate_df.to_csv("interest_rate/China_bank_interest_rate.csv")
+
+
 if __name__ == '__main__':
-    my_stock_index()
+    # my_stock_index()
+    my_list()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # print(row['code'])
         # d_start = dt.strptime(row['start_date'], '%Y-%m-%d')
         # d_end = dt.strptime(row['end_date'], '%Y-%m-%d')
