@@ -67,24 +67,27 @@ def my_stock_index():
     # stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sh000001")
     # print(stock_zh_index_daily_df)
     # stock_zh_index_daily_df.to_csv("stock_index/sh000001.csv")
-    # stock_zh_index_hist_csindex_df = ak.stock_zh_index_hist_csindex(symbol="H30374", start_date="20170101",
+    # stock_zh_index_hist_csindex_df = ak.stock_zh_index_hist_csindex(symbol="H30374", start_date="20090101",
     #                                                                 end_date="20211231")
     # print(stock_zh_index_hist_csindex_df)
     # stock_zh_index_hist_csindex_df.to_csv("stock_index/H30374.csv")
-    filePath = "index"
-    with open("all_index.csv", 'r', encoding='utf-8', newline='') as rf:
-        reader = csv.DictReader(rf)
-        file = []
-        for i, j, k in os.walk(filePath):
-            for s in k:
-                fileName = re.sub('\.csv', '', s)
-                file.append(fileName)
-        for row in reader:
-            if row['指数代码'] not in file:
-                print(row['指数代码'])
-                index_hist_cni_df = ak.index_hist_cni(symbol=row['指数代码'])
-                print(index_hist_cni_df)
-                index_hist_cni_df.to_csv(f"index/{row['指数代码']}.csv")
+    # filePath = "index"
+    # with open("all_index.csv", 'r', encoding='utf-8', newline='') as rf:
+    #     reader = csv.DictReader(rf)
+    #     file = []
+    #     for i, j, k in os.walk(filePath):
+    #         for s in k:
+    #             fileName = re.sub('\.csv', '', s)
+    #             file.append(fileName)
+    #     for row in reader:
+    #         if row['指数代码'] not in file:
+    #             print(row['指数代码'])
+    #             index_hist_cni_df = ak.index_hist_cni(symbol=row['指数代码'])
+    #             print(index_hist_cni_df)
+    #             index_hist_cni_df.to_csv(f"index/{row['指数代码']}.csv")
+    index_hist_cni_df = ak.index_hist_cni(symbol='H30374')
+    print(index_hist_cni_df)
+    index_hist_cni_df.to_csv(f"index/'H30374'.csv")
 
 
 # 获取全部指数数据
@@ -101,10 +104,35 @@ def China_rate():
     macro_bank_china_interest_rate_df.to_csv("interest_rate/China_bank_interest_rate.csv")
 
 
+def stock_indicator():
+    filePath = "stock_indicator"
+    with open("stock_list.csv", 'r', encoding='utf-8', newline='') as rf:
+        reader = csv.DictReader(rf)
+        file = []
+        for i, j, k in os.walk(filePath):
+            for s in k:
+                fileName = re.sub('\.csv', '', s)
+                file.append(fileName)
+        for row in reader:
+            if row['代码'] not in file:
+                try:
+                    stock_a_lg_indicator_df = ak.stock_a_lg_indicator(symbol=row['代码'])
+                    stock_a_lg_indicator_df.to_csv(f"stock_indicator/{row['代码']}.csv")
+                except:
+                    continue
+
+
+def bond():
+    bond_zh_hs_daily_df = ak.bond_zh_hs_daily(symbol="sz127003")
+    print(bond_zh_hs_daily_df)
+    bond_zh_hs_daily_df.to_csv('bond/sz127003.csv')
+
+
 if __name__ == '__main__':
     # my_stock_index()
-    my_list()
-
+    # my_list()
+    # stock_indicator()
+    bond()
 
 
 
